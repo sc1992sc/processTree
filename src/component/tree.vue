@@ -2,8 +2,7 @@
     <div :ref="treeRefName"
     :class="treeClassName">
         <div v-for="(item) in convertData" :key="item.uuid" 
-        :class="[isChild?'process-tree-childNodes-row':'process-tree-roots'
-            ,isCurrentSingle(convertData),
+        :class="[isChild?'process-tree-childNodes-row':'process-tree-roots',
             isChild && item.isLong?'long-with-line':'']" 
         :style="rootStyle">
             <span class="process-tree-node"
@@ -15,7 +14,7 @@
                 <div>
                     <div v-for="(child,index) in item.children" :key="index"
                     class="process-tree-childNodes-row" 
-                    :class="[isCurrentSingle(item.children),child.isLong?'long-with-line':'']">
+                    :class="[child.isLong?'long-with-line':'']">
                         <div class="line" v-if="child.isLong"></div>
                         <span class="process-tree-node"
                         :class="isLeaftNode(child)">{{child.name}}</span>
@@ -104,9 +103,6 @@ export default {
         },
         isLeaftNode(data){
             return (data.children && data.children.length>0)?"":"leaf-node";
-        },
-        isCurrentSingle(arr){
-            return arr.length==1?'single':'';
         }
     }
 }
@@ -125,9 +121,6 @@ export default {
 .process-tree-roots{
     width:250%;
     margin-bottom:20px;
-}
-.single{
-    margin-bottom:0!important;
 }
 .single-node::before{
     content:"";
