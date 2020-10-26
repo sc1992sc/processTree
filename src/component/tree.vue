@@ -4,33 +4,18 @@
         <div v-for="(item) in convertData" :key="item.uuid" 
         :class="[isChild?'process-tree-childNodes-row':'process-tree-roots',
             isChild && item.isLong?'long-with-line':'']" 
-        :style="rootStyle">
+        :style="isChild?{}:rootStyle">
+            <div class="line" v-if="item.isLong"></div>
+
             <span class="process-tree-node"
             :class="isLeaftNode(item)">{{item.name}}</span>
 
             <div class="process-tree-childNodes"
             v-if="item.children"
             :class="item.children.length>1?'multiply-node':'single-node'">
-                <div>
-                    <div v-for="(child,index) in item.children" :key="index"
-                    class="process-tree-childNodes-row" 
-                    :class="[child.isLong?'long-with-line':'']">
-                        <div class="line" v-if="child.isLong"></div>
-                        <span class="process-tree-node"
-                        :class="isLeaftNode(child)">{{child.name}}</span>
-                        
-                        <div class="process-tree-childNodes"
-                        v-if="child.children"
-                        :class="[
-                            child.children.length>1?'multiply-node':'',
-                            child.children.length==1?'single-node':'',
-                        ]">
-                            <processTree 
-                            :data="child.children || []" 
-                            :isChild="true"/>
-                        </div>
-                    </div>
-                </div>
+                <processTree 
+                :data="item.children || []" 
+                :isChild="true"/>
             </div>
         </div>
     </div>
@@ -218,7 +203,7 @@ export default {
 
 .process-tree-childNodes-row{
     position: relative;
-    margin-bottom:10px
+    margin-bottom:10px;
 }
 .process-tree-childNodes-row:last-child{
     margin-bottom:0
